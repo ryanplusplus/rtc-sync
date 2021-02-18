@@ -1,0 +1,45 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>RTC Sync</title>
+  <style>
+    div {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <button id="sync">Sync!</button>
+  </div>
+
+  <script type="text/javascript">
+    document.querySelector('#sync').addEventListener('click', async () => {
+      const port = await navigator.serial.requestPort({
+        filters: [{
+          "usbProductId": 47,
+          "usbVendorId": 10374
+        }]
+      });
+
+      await port.open({ baudRate: 115200 });
+      const writer = port.writable.getWriter();
+
+      for (let i = 0; i < 3; i++) {
+        const isoDateString = new Date().toISOString().substr(0, 19);
+        await writer.write(new TextEncoder().encode(isoDateString));
+      }
+
+      writer.releaseLock();
+      await port.close();
+
+      alert("Success!");
+    });
+  </script>
+</body>
+
+</html>

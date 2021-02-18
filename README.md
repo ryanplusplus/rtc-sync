@@ -1,1 +1,1 @@
-# rtc-sync-web-serial
+# rtc-sync
