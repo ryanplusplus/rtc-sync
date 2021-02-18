@@ -32,10 +32,8 @@
       await port.open({ baudRate: 115200 });
       const writer = port.writable.getWriter();
 
-      for (let i = 0; i < 3; i++) {
-        const isoDateString = new Date().toISOString().substr(0, 19);
-        await writer.write(new TextEncoder().encode(isoDateString));
-      }
+      const isoDateString = new Date().toISOString().substr(0, 19);
+      await writer.write(new TextEncoder().encode(isoDateString));
 
       writer.releaseLock();
       await port.close();
